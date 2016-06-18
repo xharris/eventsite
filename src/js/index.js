@@ -21,3 +21,19 @@ $(function(){
     */
 
 })
+
+function btn_addEvent() {
+    placing_event = true;
+    $(".place-event-helpertext").removeClass("hidden");
+}
+
+/*
+var ev_template = getTemplateElement(".event");
+ev_template.find(".title").val("boogers");
+ev_template.appendTo(".sidebar > .event-list");
+*/
+
+function confirmEventMarker() {
+    placing_event = false;
+    $(".place-event-helpertext").addClass("hidden");
+}

@@ -20,10 +20,6 @@
     <script src="https://www.gstatic.com/firebasejs/3.0.5/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.0.5/firebase-database.js"></script>
 
-    <!-- Google Maps -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=
-AIzaSyDtqhEfNzJcOg6piOShHElOnoddPjRsx4Y&callback=initMap" async defer></script>
-
     <!-- Material Design -->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="includes/materialize/css/materialize.min.css"  media="screen,projection"/>
@@ -38,11 +34,49 @@ AIzaSyDtqhEfNzJcOg6piOShHElOnoddPjRsx4Y&callback=initMap" async defer></script>
 </head>
 
 <body>
-    <div class="header">
+    <div class="sidebar">
+
+        <div class="header">
+            <div class="site-title">Event Site</div>
+            <a onclick="btn_addEvent()" class="waves-effect waves-light btn blue accent-4">Post an event</a>
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="event-list">
+
+        </div>
+
+        <div class="place-event-helpertext hidden">
+            <div>
+                <p>Click the map to place a marker for the location of your event</p>
+                <a onclick="confirmEventMarker()" class="waves-effect waves-light btn blue accent-4">Done</a>
+            </div>
+        </div>
+
+        <div class="form-new-event">
+
+        </div>
 
     </div>
 
-    <div id="gmap"></div>
+    <div class="container-map">
+        <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+        <div id="gmap"></div>
+    </div>
+
+    <!-- Google Maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtqhEfNzJcOg6piOShHElOnoddPjRsx4Y&libraries=places&callback=initMap" async defer></script>
 
 </body>
+
+<div id="template">
+    <div class="event">
+        <div class="container-score">
+            <button class="upvote"><i class="material-icons">keyboard_arrow_up</i></button>
+            <div class="score">5</div>
+            <button class="downvote"><i class="material-icons">keyboard_arrow_down</i></button>
+        </div>
+        <a class="title" href="#">eat barf</a>
+    </div>
+</div>
 </html>

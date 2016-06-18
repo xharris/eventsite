@@ -1,0 +1,45 @@
+// main: main.less
+
+.event {
+    padding: 6px;
+    
+    transition: ease-in-out all 0.2s;
+
+    &:hover {
+        background-color: #eceff1;
+    }
+
+    >.container-score {
+        display: inline-block;
+        text-align: center;
+        width: 32px;
+
+        >.upvote, .downvote {
+            width: 30px;
+            height: 20px;
+            padding: 1px;
+            vertical-align: bottom;
+            background-color: transparent;
+            border: none;
+
+            >i {
+                line-height: 15px;
+            }
+        }
+
+        >.score {
+            margin: 0px;
+            text-align: center;
+            width: 30px;
+            font-size: 18px;
+        }
+    }
+
+    >.title {
+        vertical-align: top;
+        line-height: 64px;
+        font-size: 18px;
+        margin-left: 10px;
+        color: #263238;
+    }
+}
