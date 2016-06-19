@@ -13,8 +13,26 @@ $(function(){
 
 });
 
-function getTemplateElement(element) {
-    return $('#template').find(element).clone();
+function getTemplateElement(element_sel) {
+    return $('#template').find(element_sel).clone();
+}
+
+function clearInputs(element_sel) {
+    jQuery(element_sel).find(':input').each(function() {
+    switch(this.type) {
+        case 'password':
+        case 'text':
+        case 'textarea':
+        case 'file':
+        case 'select-one':
+        case 'select-multiple':
+            jQuery(this).val('');
+            break;
+        case 'checkbox':
+        case 'radio':
+            this.checked = false;
+    }
+  });
 }
 
 var initialLocation;
@@ -55,7 +73,8 @@ function placeMarker(location) {
     }
     placing_event_marker = new google.maps.Marker({
         position: location,
-        map: map
+        map: map,
+        draggable: true
     });
 }
 

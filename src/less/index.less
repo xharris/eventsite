@@ -59,6 +59,37 @@
             }
         }
     }
+
+    >.form-new-event {
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        height: 100%;
+        width: 100%;
+        background-color: white;
+        z-index: 20;
+        padding: 20px;
+
+        &.hidden {
+            display: none;
+        }
+
+        .radio-label {
+            >.one {
+                color: #263238;
+                font-weight: 600;
+                font-size: 16px;
+            }
+            >.two {
+                color: #607d8b;
+                font-weight: 300;
+                margin-left: 5px;
+                font-size: 13px;
+            }
+        }
+    }
 }
 
 .container-map {

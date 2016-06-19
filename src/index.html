@@ -29,6 +29,7 @@
     <script src="js/config.js"></script>
     <script src="js/global_vars.js"></script>
     <script src="classes/user.js"></script>
+    <script src="classes/event.js"></script>
     <script src="js/index.js"></script>
 
 </head>
@@ -42,9 +43,7 @@
             <div style="clear:both"></div>
         </div>
 
-        <div class="event-list">
-
-        </div>
+        <div class="event-list"></div>
 
         <div class="place-event-helpertext hidden">
             <div>
@@ -53,8 +52,31 @@
             </div>
         </div>
 
-        <div class="form-new-event">
-
+        <div class="form-new-event hidden">
+            <div class="input-field">
+                <input id="in-title" type="text">
+                <label for="in-title">Event Title</label>
+            </div>
+            <div class="input-field">
+                <textarea id="in-description" class="materialize-textarea"></textarea>
+                <label for="in-description">Event Description</label>
+            </div>
+            <p>Visibility</p>
+            <p>
+                <input name="in-visibility" type="radio" id="radio1" value="public" checked />
+                <label class="radio-label" for="radio1">
+                    <span class="one">Public</span>
+                    <span class="two">Visible to everyone on the map. Anyone can add theirself to the guest list.</span>
+                </label>
+            </p>
+            <p>
+              <input name="in-visibility" type="radio" id="radio2" value="private" />
+              <label class="radio-label" for="radio2">
+                  <span class="one">Private</span>
+                  <span class="two">Only visible on the map to people that have the invite link.</span>
+              </label>
+            </p>
+            <a onclick="submitEvent()" class="waves-effect waves-light btn green accent-4">Save</a>
         </div>
 
     </div>
@@ -77,6 +99,7 @@
             <button class="downvote"><i class="material-icons">keyboard_arrow_down</i></button>
         </div>
         <a class="title" href="#">eat barf</a>
+        <div class="time"></div>
     </div>
 </div>
 </html>

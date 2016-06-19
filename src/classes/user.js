@@ -10,6 +10,6 @@ function getAllUsers(callback) {
     });
 }
 
-var User = {
+var xhhUser = function() {
 
 }
