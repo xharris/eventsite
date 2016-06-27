@@ -8,9 +8,11 @@ var placing_event = false;
 var placing_event_marker;
 
 $(function(){
-    // init firebase
-    fire_DB = firebase.database();
-
+    Date.prototype.toDateInputValue = (function() {
+        var local = new Date(this);
+        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+        return local.toJSON().slice(0,10);
+    });
 });
 
 function getTemplateElement(element_sel) {
@@ -19,20 +21,20 @@ function getTemplateElement(element_sel) {
 
 function clearInputs(element_sel) {
     jQuery(element_sel).find(':input').each(function() {
-    switch(this.type) {
-        case 'password':
-        case 'text':
-        case 'textarea':
-        case 'file':
-        case 'select-one':
-        case 'select-multiple':
-            jQuery(this).val('');
-            break;
-        case 'checkbox':
-        case 'radio':
-            this.checked = false;
-    }
-  });
+        switch(this.type) {
+            case 'password':
+            case 'text':
+            case 'textarea':
+            case 'file':
+            case 'select-one':
+            case 'select-multiple':
+                jQuery(this).val('');
+                break;
+            case 'checkbox':
+            case 'radio':
+                this.checked = false;
+        }
+    });
 }
 
 var initialLocation;
@@ -62,6 +64,7 @@ function initMap() {
     map.addListener('click', function(event) {
         if (placing_event) {
             placeMarker(event.latLng);
+            confirmEventMarker()
         }
     });
 }

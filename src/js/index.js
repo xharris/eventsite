@@ -1,24 +1,6 @@
 $(function(){
     /*
-    // authenticate user
-    var provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(function(result) {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = result.credential.accessToken;
-        // The signed-in user info.
-        var user = result.user;
-        // ...
-    }).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        // ...
-    });
-    */
+    // test event
     var test = new xhhEvent({
         title : "Free bean's day!",
         description : "Come and get free beans",
@@ -28,6 +10,17 @@ $(function(){
         time_end : Date.now()
     });
     addEventToList(test);
+    */
+    $(".datepicker").pickadate({
+        selectMonths: true, // Creates a dropdown to control month
+        defaultDate: new Date().toDateInputValue()
+    });
+
+    $(".datepicker").val(new Date().format("d mmmm, yyyy"));
+
+    $(".timepicker").pickatime({
+        //selectMonths: true, // Creates a dropdown to control month
+    });
 })
 
 function btn_addEvent() {
@@ -57,30 +50,31 @@ function submitEvent() {
     var in_description = $("#in-description").val();
     var in_visibility = $('input[name="in-visibility"]:checked').val();
 
-    var new_event = new xhhEvent({
+    var new_event = {
         title: in_title,
         description: in_description,
         visibility: in_visibility,
-        marker: placing_event_marker
-    });
+        lat: placing_event_marker.getPosition().lat(),
+        long: placing_event_marker.getPosition().lng()
+    };
 
     if (valid) {
         placing_event_marker.setDraggable(false);
         $(".form-new-event").addClass("hidden");
         clearInputs('.form-new-event');
-        $(".form-new-event #radio1").prop("checked", true)
-        addEventToList(new_event);
+        $(".form-new-event #radio1").prop("checked", true);
+
+        addEvent(new_event);
     }
 }
 
-function addEventToList(new_event) {
-    var ev_element = getTemplateElement(".event");
-
-    // fill in info
-    ev_element.find(".title").html(new_event.title);
-    ev_element.find(".score").html(new_event.score);
-    ev_element.find(".time").html(new_event.getStartStr());
-
-    // add the event to the list
-    $(".sidebar > .event-list").append(ev_element);
+function addEvent(new_event) {
+    $.ajax({
+        type: "POST",
+        url: "php/ajax/new_event.php",
+        data: new_event,
+        success: function(result) {
+            console.log(result)
+        }
+    });
 }

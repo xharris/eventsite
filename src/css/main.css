@@ -3,7 +3,7 @@
 }
 .event {
   position: relative;
-  padding: 6px;
+  padding: 2px;
   border-top: 1px solid #eceff1;
   border-bottom: 1px solid #eceff1;
   transition: ease-in-out all 0.2s;
@@ -126,6 +126,10 @@
   font-weight: 300;
   margin-left: 5px;
   font-size: 13px;
+}
+.sidebar > .form-new-event .dates .input-field {
+  width: 45%;
+  display: inline-block;
 }
 .container-map {
   position: absolute;
