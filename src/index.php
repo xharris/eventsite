@@ -11,7 +11,16 @@
         <div style="clear:both"></div>
     </div>
 
-    <div class="event-list"></div>
+    <div class="event-list">
+        <?php
+
+            $events = Event::getAllEvents();
+            foreach ($events as $event_id) {
+                printEvent($event_id);
+            }
+
+         ?>
+    </div>
 
     <div class="place-event-helpertext hidden">
         <div>
@@ -45,10 +54,10 @@
             <label for="in-date">End Date</label>
             <br>
             <div class="input-field">
-                <input type="date" id="in-start-date" class="datepicker">
+                <input type="date" id="in-end-date" class="datepicker">
             </div>
             <div class="input-field">
-                <input type="time" id="in-start-time" class="timepicker" value="23:59">
+                <input type="time" id="in-end-time" class="timepicker" value="23:59">
             </div>
         </div>
 
@@ -79,18 +88,5 @@
 
 <!-- Google Maps -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtqhEfNzJcOg6piOShHElOnoddPjRsx4Y&libraries=places&callback=initMap" async defer></script>
-
-
-<div id="template">
-    <div class="event">
-        <div class="container-score">
-            <button class="upvote"><i class="material-icons">keyboard_arrow_up</i></button>
-            <div class="score">5</div>
-            <button class="downvote"><i class="material-icons">keyboard_arrow_down</i></button>
-        </div>
-        <a class="title" href="#">eat barf</a>
-        <div class="time"></div>
-    </div>
-</div>
 
 <?php includeFooter(); ?>

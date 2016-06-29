@@ -1,19 +1,25 @@
 $(function(){
-    /*
-    // test event
-    var test = new xhhEvent({
-        title : "Free bean's day!",
-        description : "Come and get free beans",
-        visibility : "public",
-        score : 1,
-        time_start : Date.now(),
-        time_end : Date.now()
-    });
-    addEventToList(test);
-    */
+    // pad numbers to 2 digits
+    function twoDigits(d) {
+        if(0 <= d && d < 10) return "0" + d.toString();
+        if(-10 < d && d < 0) return "-0" + (-1*d).toString();
+        return d.toString();
+    }
+
+    /**
+     * …and then create the method to output the date string as desired.
+     * Some people hate using prototypes this way, but if you are going
+     * to apply this to more than one Date object, having it as a prototype
+     * makes sense.
+     **/
+    Date.prototype.toMysqlFormat = function() {
+        return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + twoDigits(this.getUTCDate()) + " " + twoDigits(this.getUTCHours()) + ":" + twoDigits(this.getUTCMinutes()) + ":" + twoDigits(this.getUTCSeconds());
+    };
+
     $(".datepicker").pickadate({
         selectMonths: true, // Creates a dropdown to control month
-        defaultDate: new Date().toDateInputValue()
+        defaultDate: new Date().toDateInputValue(),
+        clear: ''
     });
 
     $(".datepicker").val(new Date().format("d mmmm, yyyy"));
@@ -55,11 +61,14 @@ function submitEvent() {
         description: in_description,
         visibility: in_visibility,
         lat: placing_event_marker.getPosition().lat(),
-        long: placing_event_marker.getPosition().lng()
+        long: placing_event_marker.getPosition().lng(),
+        start: new Date($("#in-start-date").val() + " " + $("#in-start-time").val()).toMysqlFormat(),
+        end: new Date($("#in-end-date").val() + " " + $("#in-end-time").val()).toMysqlFormat()
     };
 
     if (valid) {
         placing_event_marker.setDraggable(false);
+        placing_event_marker = null;
         $(".form-new-event").addClass("hidden");
         clearInputs('.form-new-event');
         $(".form-new-event #radio1").prop("checked", true);
