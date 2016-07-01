@@ -1,11 +1,11 @@
 .card-shadow {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 .event {
   position: relative;
   padding: 2px;
-  border-top: 1px solid #eceff1;
-  border-bottom: 1px solid #eceff1;
+  margin: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: ease-in-out all 0.2s;
 }
 .event:hover {
@@ -51,7 +51,7 @@
   color: #607d8b;
 }
 .sidebar {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   width: 350px;
   height: 100%;
   position: absolute;

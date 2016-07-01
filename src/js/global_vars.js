@@ -1,8 +1,6 @@
-// firebase
-var fire_DB;
-
 // google maps
 var map;
+var event_markers = [];
 
 var placing_event = false;
 var placing_event_marker;
@@ -56,6 +54,7 @@ function initMap() {
             initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
             map.setCenter(initialLocation);
             map.setZoom(18);
+            //loadEventMarkers(map.getBounds());
         });
     }
 
@@ -67,6 +66,18 @@ function initMap() {
             confirmEventMarker()
         }
     });
+
+    google.maps.event.addListener(map, 'idle', function() {
+        map_clearEventMarkers();
+        loadEventsBounds(map.getBounds());
+    });
+
+}
+
+function map_clearEventMarkers() {
+    event_markers.forEach(function(marker) {
+        marker.setMap(null);
+    })
 }
 
 function placeMarker(location) {

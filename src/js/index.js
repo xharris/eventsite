@@ -27,6 +27,7 @@ $(function(){
     $(".timepicker").pickatime({
         //selectMonths: true, // Creates a dropdown to control month
     });
+
 })
 
 function btn_addEvent() {
@@ -86,4 +87,58 @@ function addEvent(new_event) {
             console.log(result)
         }
     });
+}
+
+// load map markers and event list for events in a certain area
+// bounds [maps.LatLngBounds] - area to load
+function loadEventsBounds(bounds) {
+    var b_NE = bounds.getNorthEast();//.getPosition();
+    var b_SW = bounds.getSouthWest();//.getPosition();
+    var bound_values = {
+        lat_min: b_SW.lat(),
+        lat_max: b_NE.lat(),
+        long_min: b_SW.lng(),
+        long_max: b_NE.lng()
+    }
+    $.ajax({
+        type: "POST",
+        url: "php/ajax/get_bound_events.php",
+        data: bound_values,
+        success: function(result) {
+            // update list
+            eventList_clear();
+            map_clearEventMarkers();
+            JSON.parse(result).forEach(function(event) {
+                eventList_addEvent(event.id);
+                map_addMarker({lat: event.lat, lng: event.lng});
+            })
+        }
+    })
+}
+
+function eventList_clear() {
+    $(".event-list").html("");
+}
+
+function eventList_addEvent(id) {
+    $.ajax({
+        type: "POST",
+        url: "php/ajax/print_event.php",
+        data: {
+            id: id
+        },
+        success: function(result) {
+            $(".event-list").append(result);
+        }
+    })
+}
+
+// coords = {lat, lng}
+function map_addMarker(coords) {
+    var mark = new google.maps.Marker({
+       position: new google.maps.LatLng(coords.lat, coords.lng),
+       map: map,
+       draggable: false
+    });
+    event_markers.push(mark);
 }
