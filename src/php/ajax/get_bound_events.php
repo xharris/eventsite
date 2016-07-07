@@ -24,10 +24,12 @@ if ($stmt = $GLOBALS['DB']->prepStatement(
     if ($result) {
         $ret_events = array();
         foreach ($GLOBALS['DB']->getQueryResults($stmt) as $arr) {
+            $temp_event = new Event($arr['id']);
             array_push($ret_events, array(
                 "id" => $arr['id'],
                 "lat" => $arr['latitude'],
-                "lng" => $arr['longitude']
+                "lng" => $arr['longitude'],
+                "markerInfo" => htmlspecialchars($temp_event->getMarkerInfo())
             ));
         }
         echo json_encode($ret_events);

@@ -18,4 +18,9 @@ function randomString()
     return $randstring;
 }
 
+function formatDateTime($dt_str) {
+    $date = strtotime($dt_str);
+    return date('m/d g:ia', $date);
+}
+
 ?>

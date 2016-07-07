@@ -11,16 +11,7 @@
         <div style="clear:both"></div>
     </div>
 
-    <div class="event-list">
-        <?php
-
-            $events = Event::getAllEvents();
-            foreach ($events as $event_id) {
-                printEvent($event_id);
-            }
-
-         ?>
-    </div>
+    <div class="event-list"></div>
 
     <div class="place-event-helpertext hidden">
         <div>

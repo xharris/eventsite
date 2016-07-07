@@ -13,7 +13,9 @@ $(function(){
      * makes sense.
      **/
     Date.prototype.toMysqlFormat = function() {
-        return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + twoDigits(this.getUTCDate()) + " " + twoDigits(this.getUTCHours()) + ":" + twoDigits(this.getUTCMinutes()) + ":" + twoDigits(this.getUTCSeconds());
+        var date = this.getFullYear() + "-" + twoDigits(1 + this.getMonth()) + "-" + twoDigits(this.getDate()) + " " + twoDigits(this.getHours()) + ":" + twoDigits(this.getMinutes()) + ":" + twoDigits(this.getSeconds());
+        console.log(date);
+        return date;
     };
 
     $(".datepicker").pickadate({
@@ -68,7 +70,7 @@ function submitEvent() {
     };
 
     if (valid) {
-        placing_event_marker.setDraggable(false);
+        placing_event_marker.setMap(null);
         placing_event_marker = null;
         $(".form-new-event").addClass("hidden");
         clearInputs('.form-new-event');
@@ -84,9 +86,14 @@ function addEvent(new_event) {
         url: "php/ajax/new_event.php",
         data: new_event,
         success: function(result) {
-            console.log(result)
+            loadEventsBounds(map.getBounds());
         }
     });
+}
+
+// checks if id of event is in list
+function eventPrinted(event) {
+    return !printed_event_ids.includes(event.id)
 }
 
 // load map markers and event list for events in a certain area
@@ -105,22 +112,37 @@ function loadEventsBounds(bounds) {
         url: "php/ajax/get_bound_events.php",
         data: bound_values,
         success: function(result) {
-            // update list
-            eventList_clear();
-            map_clearEventMarkers();
+            // organize results into array
+            var events = [];
             JSON.parse(result).forEach(function(event) {
+                events.push({
+                    id: event.id,
+                    lat: event.lat,
+                    lng: event.lng,
+                    markerInfo: event.markerInfo})
+            })
+            // remove events that were already added
+            events = events.filter(eventPrinted)
+
+            // display new events
+            events.forEach(function(event) {
                 eventList_addEvent(event.id);
-                map_addMarker({lat: event.lat, lng: event.lng});
+                map_addMarker({lat: event.lat, lng: event.lng}, unescape(event.markerInfo));
             })
         }
     })
 }
 
+// removes all events from homepage list
 function eventList_clear() {
     $(".event-list").html("");
+    printed_event_ids = [];
+    map_clearEventMarkers();
 }
 
+// adds an event to the main homepage list
 function eventList_addEvent(id) {
+    printed_event_ids.push(id);
     $.ajax({
         type: "POST",
         url: "php/ajax/print_event.php",
@@ -133,12 +155,19 @@ function eventList_addEvent(id) {
     })
 }
 
+// adds a marker with COORDS and popup description INFO
 // coords = {lat, lng}
-function map_addMarker(coords) {
+function map_addMarker(coords, info) {
+    info = $('<div/>').html(info).text() || "";
+
     var mark = new google.maps.Marker({
        position: new google.maps.LatLng(coords.lat, coords.lng),
        map: map,
        draggable: false
+    });
+    mark.addListener('click', function() {
+        info_window.open(map, mark);
+        info_window.setContent(info)
     });
     event_markers.push(mark);
 }

@@ -191,6 +191,10 @@
 #template {
   display: none;
 }
+.event-marker-info .times .start,
+.event-marker-info .times .end {
+  margin: 0px;
+}
 html * {
   font-family: "Roboto", sans-serif;
 }

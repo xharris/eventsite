@@ -3,6 +3,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/config.php";
 
 class Event {
+    private $valid = true;
     private $values = array();
 
     public function Event($id) {
@@ -23,14 +24,72 @@ class Event {
             }
 
             $stmt->close();
+
+            if ($stmt = $GLOBALS['DB']->prepStatement("SELECT `start`,`end` FROM event_time WHERE id=?")) {
+                $stmt->bind_param("i", $id);
+                $stmt->execute();
+
+                $result = $stmt->execute();
+
+                if ($result) {
+                    foreach ($GLOBALS['DB']->getQueryResults($stmt) as $arr) {
+                        foreach ($arr as $index => $value) {
+                            $this->values[$index] = $value;
+                        }
+                    }
+                }
+
+                $stmt->close();
+            }
+
         } else {
-            echo "Invalid Event ($id)";
+            $this->valid = false;
+            $error = 'Event creation failed (event #' . $id . ')';
+            throw new Exception($error);
             return false;
         }
     }
 
     public function getTitle() {
-        return $this->values["title"];
+        if ($this->valid) {
+            return $this->values["title"];
+        }
+    }
+
+    public function getUUID() {
+        if ($this->valid) {
+            return $this->values['uuid'];
+        }
+    }
+
+    public function getStartDateTime() {
+        if ($this->valid) {
+            return $this->values['start'];
+        }
+    }
+
+    public function getEndDateTime() {
+        if ($this->valid) {
+            return $this->values['end'];
+        }
+    }
+
+    public function getMarkerInfo() {
+        $time_start = formatDateTime($this->getStartDateTime());
+        $time_end = formatDateTime($this->getEndDateTime());
+
+
+
+        $html_str = "".
+        "<div class='event-marker-info'>".
+            "<a class='title'>" . $this->getTitle() . "</a>".
+            "<div class='times'>".
+                "<p class='start'>" . $time_start . "</p>".
+                "<p class='end'>" . $time_end . "</p>".
+            "</div>".
+        "</div>";
+
+        return $html_str;
     }
 
     /* $info = {

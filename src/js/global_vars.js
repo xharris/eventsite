@@ -1,6 +1,8 @@
 // google maps
 var map;
 var event_markers = [];
+var info_window;
+var printed_event_ids = [];
 
 var placing_event = false;
 var placing_event_marker;
@@ -54,7 +56,7 @@ function initMap() {
             initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
             map.setCenter(initialLocation);
             map.setZoom(18);
-            //loadEventMarkers(map.getBounds());
+            setTimeout(function(){ loadEventsBounds(map.getBounds()); }, 3000);
         });
     }
 
@@ -68,16 +70,22 @@ function initMap() {
     });
 
     google.maps.event.addListener(map, 'idle', function() {
-        map_clearEventMarkers();
         loadEventsBounds(map.getBounds());
     });
 
+    info_window = new google.maps.InfoWindow({
+        content: ""
+    });
 }
 
 function map_clearEventMarkers() {
     event_markers.forEach(function(marker) {
         marker.setMap(null);
     })
+}
+
+function map_removeMarker(marker) {
+    marker.setMap(null);
 }
 
 function placeMarker(location) {
